@@ -351,7 +351,7 @@ public class HealthPlugin extends CordovaPlugin {
         
         if (this.account != null) {
             GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder().addExtension(fitnessOptions).build();
-            GoogleSignInClient client = GoogleSignIn.getClient(this, signInOptions);
+            GoogleSignInClient client = GoogleSignIn.getClient(this.cordova.getContext(), signInOptions);
             client.revokeAccess()
                     .addOnSuccessListener(r -> {
                         callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, true));
