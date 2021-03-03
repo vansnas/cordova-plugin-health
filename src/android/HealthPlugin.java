@@ -11,6 +11,7 @@ import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.fitness.Fitness;
@@ -349,8 +350,8 @@ public class HealthPlugin extends CordovaPlugin {
         FitnessOptions fitnessOptions = builder.build();
         
         if (this.account != null) {
-            var signInOptions = GoogleSignInOptions.Builder().addExtension(fitnessOptions).build();
-            var client = GoogleSignIn.getClient(context, signInOptions);
+            GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder().addExtension(fitnessOptions).build();
+            GoogleSignInClient client = GoogleSignIn.getClient(this, signInOptions);
             client.revokeAccess()
                     .addOnSuccessListener(r -> {
                         callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, true));
