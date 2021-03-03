@@ -338,9 +338,19 @@ public class HealthPlugin extends CordovaPlugin {
      * @param callbackContext
      */
     private void disconnect(final CallbackContext callbackContext) {
+        
+        FitnessOptions.Builder builder = FitnessOptions.builder();
+        for (String readType : authReadTypes) {
+            builder.addDataType(datatypes.get(readType), FitnessOptions.ACCESS_READ);
+        }
+        for (String readWriteType : authReadWriteTypes) {
+            builder.addDataType(datatypes.get(readWriteType), FitnessOptions.ACCESS_WRITE);
+        }
+        FitnessOptions fitnessOptions = builder.build();
+        
         if (this.account != null) {
-            val signInOptions = GoogleSignInOptions.Builder().addExtension(fitnessOptions).build()
-            val client = GoogleSignIn.getClient(context, signInOptions)
+            var signInOptions = GoogleSignInOptions.Builder().addExtension(fitnessOptions).build();
+            var client = GoogleSignIn.getClient(context, signInOptions);
             client.revokeAccess()
                     .addOnSuccessListener(r -> {
                         callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, true));
